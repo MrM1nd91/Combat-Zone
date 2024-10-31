@@ -39,21 +39,44 @@ void Personaje::render(sf::RenderWindow& window)
 }
 
 void Personaje::update()
-{
+{   
+    float fuerzaMov = 100.0f;
+    //float fuerzaS = 50.0f;
     _velocity = { 0,0 };
+
+    b2Vec2 XLREIGHT(0.0f, 1.0f);
 
     //LE MODIFIQUE LA VELOCIDAD A 8 para hacer tests
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        _velocity.y = -8;
+        _velocity.y = -4;
+       //BODY->ApplyLinearImpulse(b2Vec2(0.0f, fuerzaS), BODY->GetWorldCenter(), true);
+       b2Vec2 Accel = BODY->GetLinearVelocity() + XLREIGHT;
+
+       BODY->SetLinearVelocity(Accel);
+
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        _velocity.x = -8;
+        _velocity.x = -4;
+        BODY->ApplyForceToCenter(b2Vec2(-fuerzaMov, 0.0f), true);
     }
+    // Que se detenga al dejar de presionar
+   /* if (tecla.type == sf::Event::KeyReleased) {
+
+        if (tecla.key.code == sf::Keyboard::Left)
+        {
+            BODY->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+        }
+
+
+    }*/
+
+    //Down - Puede ser necesaria para alguna animacion
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        _velocity.y = 8;
+        _velocity.y = 4;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        _velocity.x = 8;
+        _velocity.x = 4;
+        BODY->ApplyForceToCenter(b2Vec2(fuerzaMov, 0.0f), true);
     }
 
 
@@ -66,9 +89,10 @@ void Personaje::update()
         _sprite.setScale(1, 1);
     }
 
-
+    //hay que agregar restricciones al cuerpo Box2d
     if (_sprite.getGlobalBounds().left < 0) {
         _sprite.setPosition(_sprite.getOrigin().x, _sprite.getPosition().y);
+        
     }
 
     if (_sprite.getGlobalBounds().top < 0) {
@@ -82,7 +106,7 @@ void Personaje::update()
     if (_sprite.getPosition().y + _sprite.getGlobalBounds().height > 600) {
         _sprite.setPosition(_sprite.getPosition().x, 600 - _sprite.getGlobalBounds().height);
     }
-
+    
 }
 
 void Personaje::draw(sf::RenderTarget& target, sf::RenderStates states) const

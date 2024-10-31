@@ -9,6 +9,7 @@ class Personaje : public sf::Drawable
     sf::Sprite _sprite;
     sf::Texture _texture;
     sf::Vector2f _velocity;
+    sf::Event tecla;
 
     b2Body* BODY;
 

@@ -19,7 +19,7 @@ Plataforma::Plataforma(b2World& world, float x, float y, float with, float heigh
 	FLOOR->CreateFixture(&floorS, 0.0f);
 
 	shapeFloor.setSize(sf::Vector2f(with, height));//Se puede probar la escala
-	shapeFloor.setOrigin(with / 2.0, height / 2.0);
+	shapeFloor.setOrigin(with / 2.0f, height / 2.0f);
 	shapeFloor.setFillColor(sf::Color::Green);
 
 }
@@ -30,7 +30,7 @@ void Plataforma::render(sf::RenderWindow& window)
 	float angu = FLOOR->GetAngle();
 
 	shapeFloor.setPosition(posicion.x * Escala,window.getSize().y - posicion.y * Escala);
-	shapeFloor.setRotation(angu * 180 / b2_pi);
+	shapeFloor.setRotation(angu * 180.0f / b2_pi);
 
 }
 

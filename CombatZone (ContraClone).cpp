@@ -17,7 +17,7 @@ int main()
     b2World mundo(gravedad);
 
     Plataforma Suelo(mundo, 10.0f, 2.0f, 2000.0f, 100.0f);
-    Personaje character(mundo,13.0f, 15.0f, 50.0f, 100.0f);
+    Personaje character(mundo,13.0f, 15.0f, 97.0f, 193.0f);
 
     while (window.isOpen())
     {
