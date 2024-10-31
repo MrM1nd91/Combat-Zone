@@ -1,12 +1,41 @@
 #include "Personaje.h"
 
-Personaje::Personaje()
+Personaje::Personaje(b2World& mundo, float x, float y, float width, float height)
 {
+
+    b2BodyDef bodyCorpse;
+    bodyCorpse.type = b2_dynamicBody;
+    bodyCorpse.position.Set(x, y);
+    BODY = mundo.CreateBody(&bodyCorpse);
+
+    b2PolygonShape bodyS;
+    bodyS.SetAsBox(width/Escale/2.0f, height/Escale/2.0f);
+
+    b2FixtureDef fixtureBody;
+    fixtureBody.shape = &bodyS;
+    fixtureBody.density = 1.0f;
+    fixtureBody.friction = 0.3f;
+
+    BODY->CreateFixture(&fixtureBody);
+
+
     _velocity = { 4,4 };
     _texture.loadFromFile("Character.png");
     _sprite.setTexture(_texture);
-    _sprite.setOrigin(_sprite.getGlobalBounds().width / 2, 0);
+    //_sprite.setOrigin(_sprite.getGlobalBounds().width / 2, 0);
+    _sprite.setOrigin(_texture.getSize().x / 2.0f, _texture.getSize().y / 2.0f);
+    _sprite.setScale(width / _texture.getSize().x, height / _texture.getSize().y);
 
+}
+
+void Personaje::render(sf::RenderWindow& window)
+{
+    b2Vec2 position = BODY->GetPosition();
+    float angle = BODY->GetAngle();
+
+
+    _sprite.setPosition(position.x * Escale, window.getSize().y - position.y * Escale);
+    _sprite.setRotation(angle * 180.0f / b2_pi);
 }
 
 void Personaje::update()

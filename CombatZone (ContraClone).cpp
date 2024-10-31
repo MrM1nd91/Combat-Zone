@@ -3,15 +3,21 @@
 #include <box2d/box2d.h>
 //#include <iostream>
 #include "Personaje.h"
+#include "Plataforma.h"
 
 int main()
 {
-
+    int32 velIt = 8;
+    int32 posIt = 3;
 
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Combat Zone Ver1");
     window.setFramerateLimit(60);
 
-    Personaje character;
+    b2Vec2 gravedad(0.0f, -5.0f);
+    b2World mundo(gravedad);
+
+    Plataforma Suelo(mundo, 10.0f, 2.0f, 2000.0f, 100.0f);
+    Personaje character(mundo,13.0f, 15.0f, 50.0f, 100.0f);
 
     while (window.isOpen())
     {
@@ -22,6 +28,8 @@ int main()
                 window.close();
         }
 
+
+        mundo.Step(1 / 60.0f, velIt, posIt);
         //CMD - Joy
 
 
@@ -30,9 +38,13 @@ int main()
         character.update();
 
         window.clear();
+        
+        Suelo.render(window);
+        character.render(window);
 
         // Draw
         window.draw(character);
+        window.draw(Suelo);
 
         //Display - Flip
         window.display();
