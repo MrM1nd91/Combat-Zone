@@ -135,9 +135,11 @@
   <ItemGroup>
     <ClCompile Include="CombatZone (ContraClone).cpp" />
     <ClCompile Include="Personaje.cpp" />
+    <ClCompile Include="Plataforma.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Personaje.h" />
+    <ClInclude Include="Plataforma.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
