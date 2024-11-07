@@ -14,19 +14,35 @@ Personaje::Personaje(b2World& mundo, float x, float y, float width, float height
     b2FixtureDef fixtureBody;
     fixtureBody.shape = &bodyS;
     fixtureBody.density = 1.0f;
-    fixtureBody.friction = 0.3f;
+    fixtureBody.friction = 0.7f;
+    
 
     BODY->CreateFixture(&fixtureBody);
 
+    BODY->SetFixedRotation(true);
+
 
     _velocity = { 4,4 };
-    _texture.loadFromFile("Character.png");
+    _texture.loadFromFile("Wizard.png");
     _sprite.setTexture(_texture);
+
+
+    sf::Vector2u textureSize = _texture.getSize();
+    textureSize.x /= 8;
+    textureSize.y /= 6;
+   
+
+    _sprite.setTextureRect(sf::IntRect(textureSize.x * 0, textureSize.y * 0, textureSize.x, textureSize.y));
+
     //_sprite.setOrigin(_sprite.getGlobalBounds().width / 2, 0);
-    _sprite.setOrigin(_texture.getSize().x / 2.0f, _texture.getSize().y / 2.0f);
-    _sprite.setScale(width / _texture.getSize().x, height / _texture.getSize().y);
+    //_sprite.setOrigin(_texture.getSize().x / 2.0f, _texture.getSize().y / 2.0f);
+    _sprite.setOrigin(textureSize.x/2.0f, textureSize.y/2.0f);
+
+    //_sprite.setScale(width / _texture.getSize().x, height / _texture.getSize().y);
 
 }
+
+
 
 void Personaje::render(sf::RenderWindow& window)
 {
@@ -38,46 +54,72 @@ void Personaje::render(sf::RenderWindow& window)
     _sprite.setRotation(angle * 180.0f / b2_pi);
 }
 
-void Personaje::update()
+void Personaje::update(sf::Event tecla)
 {   
-    float fuerzaMov = 100.0f;
-    //float fuerzaS = 50.0f;
+    float fuerzaMov = 5.0f;
+    float fuerzaS = 50.0f;
     _velocity = { 0,0 };
+    int xTexture = 0;
+    sf::Vector2 textureSize = _texture.getSize();
+    textureSize.x /= 8;
+    textureSize.y /= 6;
+    int caminaFrame = 1;
+    int saltoFrame = 2;
+    int agacharseFrame = 4;
 
-    b2Vec2 XLREIGHT(0.0f, 1.0f);
 
-    //LE MODIFIQUE LA VELOCIDAD A 8 para hacer tests
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+    
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        BODY->ApplyLinearImpulse(b2Vec2(0.0f, fuerzaS), BODY->GetWorldCenter(), true);
         _velocity.y = -4;
-       //BODY->ApplyLinearImpulse(b2Vec2(0.0f, fuerzaS), BODY->GetWorldCenter(), true);
-       b2Vec2 Accel = BODY->GetLinearVelocity() + XLREIGHT;
-
-       BODY->SetLinearVelocity(Accel);
-
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        _velocity.x = -4;
-        BODY->ApplyForceToCenter(b2Vec2(-fuerzaMov, 0.0f), true);
+    
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        //BODY->ApplyLinearImpulse(b2Vec2(0.0f, -fuerzaS), BODY->GetWorldCenter(), true);
+        _sprite.setTextureRect(sf::IntRect(xTexture, textureSize.y * agacharseFrame, textureSize.x, textureSize.y));
+        //_velocity.y = 4;
     }
-    // Que se detenga al dejar de presionar
-   /* if (tecla.type == sf::Event::KeyReleased) {
 
-        if (tecla.key.code == sf::Keyboard::Left)
-        {
-            BODY->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-        }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        BODY->ApplyLinearImpulse(b2Vec2(fuerzaMov,0.0f), BODY->GetWorldCenter(), true);
+        
+        xTexture = (int)_sprite.getPosition().x / 40 % 7;
+        xTexture = xTexture * textureSize.x;
+        //std::cout << xTexture << std::endl;
 
-
-    }*/
-
-    //Down - Puede ser necesaria para alguna animacion
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        _velocity.y = 4;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        _sprite.setTextureRect(sf::IntRect(xTexture, textureSize.y * caminaFrame, textureSize.x, textureSize.y));
         _velocity.x = 4;
-        BODY->ApplyForceToCenter(b2Vec2(fuerzaMov, 0.0f), true);
+        
+
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+
+        BODY->ApplyLinearImpulse(b2Vec2(-fuerzaMov, 0.0f), BODY->GetWorldCenter(), true);
+
+        int xTexture = 0;
+        xTexture = (int)_sprite.getPosition().x / 40 % 7;
+        xTexture = xTexture * textureSize.x;
+
+        _sprite.setTextureRect(sf::IntRect(xTexture, textureSize.y * caminaFrame, textureSize.x, textureSize.y));
+        //Mago.move(-4, 0);
+
+
+        _velocity.x = -4;
+    }
+
+    if (tecla.type == sf::Event::KeyReleased)
+    {
+        BODY->ApplyLinearImpulse(b2Vec2(0.0f, -fuerzaS), BODY->GetWorldCenter(), true);
+        _sprite.setTextureRect(sf::IntRect(textureSize.x * 0, textureSize.y * 0, textureSize.x, textureSize.y));
+       
+    }
+    
+   
 
 
     _sprite.move(_velocity);
@@ -89,7 +131,7 @@ void Personaje::update()
         _sprite.setScale(1, 1);
     }
 
-    //hay que agregar restricciones al cuerpo Box2d
+    //hay que agregar restricciones al cuerpo Box2d?
     if (_sprite.getGlobalBounds().left < 0) {
         _sprite.setPosition(_sprite.getOrigin().x, _sprite.getPosition().y);
         

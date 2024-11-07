@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>Bibiliotecas Externas\Box2D\include;Bibiliotecas Externas\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,6 +135,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CombatZone (ContraClone).cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Personaje.cpp" />
     <ClCompile Include="Plataforma.cpp" />
   </ItemGroup>

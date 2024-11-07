@@ -13,14 +13,14 @@ Plataforma::Plataforma(b2World& world, float x, float y, float with, float heigh
 
 	b2FixtureDef fixtureFloor;
 	fixtureFloor.shape = &floorS;
-	fixtureFloor.density = 3.0f;
-	fixtureFloor.friction = 0.03f;
+	fixtureFloor.density = 0.0f;
+	fixtureFloor.friction = 0.5f;
 
 	FLOOR->CreateFixture(&floorS, 0.0f);
 
 	shapeFloor.setSize(sf::Vector2f(with, height));//Se puede probar la escala
 	shapeFloor.setOrigin(with / 2.0f, height / 2.0f);
-	shapeFloor.setFillColor(sf::Color::Green);
+	shapeFloor.setFillColor(sf::Color::White);
 
 }
 
