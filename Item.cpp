@@ -10,6 +10,7 @@ Item::Item()
 
 void Item::update()
 {
+	//animaciones
 }
 
 void Item::draw(sf::RenderTarget& target, sf::RenderStates states) const

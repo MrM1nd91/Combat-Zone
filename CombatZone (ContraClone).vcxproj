@@ -134,14 +134,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camara.cpp" />
     <ClCompile Include="CombatZone (ContraClone).cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Juego.cpp" />
+    <ClCompile Include="Mapa.cpp" />
     <ClCompile Include="Personaje.cpp" />
     <ClCompile Include="Plataforma.cpp" />
+    <ClCompile Include="Renderizador.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camara.h" />
+    <ClInclude Include="Global.h" />
+    <ClInclude Include="Juego.h" />
+    <ClInclude Include="Mapa.h" />
     <ClInclude Include="Personaje.h" />
     <ClInclude Include="Plataforma.h" />
+    <ClInclude Include="Renderizador.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CombatZone (ContraClone).rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

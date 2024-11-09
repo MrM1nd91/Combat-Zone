@@ -5,6 +5,9 @@
 #include "Personaje.h"
 #include "Plataforma.h"
 #include "Item.h"
+#include "Camara.h"
+#include "Renderizador.h"
+#include "Juego.h"
 
 int main()
 {
@@ -14,12 +17,17 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Combat Zone Ver1");
     window.setFramerateLimit(60);
+
+    Camara cam;
+    Renderizador render(window);
+
     
 
     b2Vec2 gravedad(0.0f, -9.8f);
     b2World mundo(gravedad);
 
     Plataforma Suelo(mundo, 10.0f, 2.0f, 2000.0f, 100.0f);
+    
     Personaje character(mundo,13.0f, 15.0f, 128.0f, 128.0f);
     Item powerup;
 
@@ -30,7 +38,7 @@ int main()
     font.loadFromFile("sky.png");
     img.setTexture(font);
 
-
+    Start(window);
 
     while (window.isOpen())
     {
@@ -48,12 +56,16 @@ int main()
 
 
         //Update - Actualiza los estados del juego
+        window.setView(cam.Vista(window.getSize()));
         character.update(event);
 
         window.clear();
 
         Suelo.render(window);
+        Render(render);
+      
         character.render(window);
+        
 
         // Draw
         window.draw(img);
@@ -62,6 +74,7 @@ int main()
         window.draw(Suelo);
 
         //Display - Flip
+
         window.display();
     }
 

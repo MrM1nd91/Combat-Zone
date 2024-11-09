@@ -1,8 +1,8 @@
 #pragma once
 #include <box2d/box2d.h>
 #include <SFML/Graphics.hpp>
+#include "Global.h"
 
-const float Escala = 32.0f;
 
 class Plataforma : public sf::Drawable
 {	private:
